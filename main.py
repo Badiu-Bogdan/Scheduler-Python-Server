@@ -1,8 +1,25 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 api = Api(app)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+db = SQLAlchemy(app)
+
+
+class VideoModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    views = db.Column(db.Integer, nullable=False)
+    likes = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return F"Video(name={self.name}, views={self.views}, likes={self.likes}"
+
+
+#db.create_all()
 
 names = {"tim": {"age": 19, "gender": "male"}, "bill": {"age": 70, "gender": "male"}}
 
